@@ -1,7 +1,7 @@
 import sys
 from subprocess import Popen, PIPE
 
-from Server.bin.Utils import Utils, Singleton
+from bin.Utils import Utils, Singleton
 
 
 @Singleton
@@ -43,6 +43,9 @@ class Worker:
         self.current_process = Popen(cmd, stdout=PIPE, bufsize=1, close_fds=unix, shell=True, cwd=path)
 
     def process_running(self):
+        if self.current_process is None:
+            return False
+
         if self.current_process.poll() is None:
             return True
         else:

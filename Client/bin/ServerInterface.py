@@ -2,7 +2,7 @@ import sys
 
 import requests
 
-from Client.bin.Utils import Singleton, Utils
+from bin.Utils import Singleton, Utils
 
 
 @Singleton

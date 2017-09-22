@@ -1,7 +1,7 @@
 import configparser
 import os
 
-from Client.bin.Setup import Setup
+from bin.Setup import Setup
 
 
 class Utils:

@@ -1,7 +1,7 @@
 import configparser
 import os
 
-from Server.bin.Setup import Setup
+from bin.Setup import Setup
 
 
 class Utils:
@@ -18,7 +18,7 @@ class Utils:
     @staticmethod
     def get_vlc_default():
         config = Utils.load_configuration()
-        vlc_bin_path = config['EXTERNAL']['VLC']
+        vlc_bin_path = config['EXTERNAL']['VLC_DIR']
         vlc_cmd = Setup.VLC_DEFAULT_COMMAND
         return vlc_bin_path, vlc_cmd
 
