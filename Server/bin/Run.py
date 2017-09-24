@@ -1,14 +1,14 @@
 import signal
 import sys
 
-from Server.bin.Server import Server
-from Server.bin.Utils import Utils
+from bin.Server import Server
+from bin.Utils import Utils
 
 config = Utils.load_configuration()
-port = config['NETWORK']['PORT']
+port = int(config['NETWORK']['PORT'])
 
 listener = Server()
-listener.start()
+listener.start(port)
 
 
 def signal_handler(signal, frame):

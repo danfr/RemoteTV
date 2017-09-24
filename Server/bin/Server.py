@@ -2,9 +2,12 @@ import cgi
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from socketserver import ThreadingMixIn
 
+from bin.Worker import Worker
+
 
 class Server:
-    httpd = None
+    def __init__(self):
+        self.httpd = None
 
     def start(self, port):
         print('starting server...')
@@ -33,8 +36,11 @@ class RequestHandler(BaseHTTPRequestHandler):
                      'CONTENT_TYPE': self.headers['Content-Type'],
                      })
 
-        code = Worker.manage_command(form)
+        worker = Worker()
+        code = worker.manage_command(form)
 
         # Begin the response
         self.send_response(code)
+        self.end_headers()
+
         return

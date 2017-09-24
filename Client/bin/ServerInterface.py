@@ -1,6 +1,7 @@
 import sys
 
 import requests
+from requests.exceptions import ConnectionError
 
 from bin.Utils import Singleton, Utils
 
@@ -22,8 +23,8 @@ class ServerInterface:
         # sending post request and saving response as response object
         try:
             r = requests.post(url=self.server_url, data=data)
-        except ConnectionError:
-            print("ERROR : Server unavailable at " + self.server_url, file=sys.stderr)
+        except ConnectionError as e:
+            print("ERROR : Server unavailable at " + self.server_url, e, file=sys.stderr)
             return False
 
         return r.status_code == 200

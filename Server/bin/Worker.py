@@ -1,6 +1,7 @@
 import sys
 from subprocess import Popen, PIPE
 
+from bin.Setup import Setup
 from bin.Utils import Utils, Singleton
 
 
@@ -10,26 +11,28 @@ class Worker:
 
     def manage_command(self, form):
         try:
-            command = form['COMMAND']
+            command = form.getvalue('COMMAND')
         except KeyError:
             print("ERROR : No command given", file=sys.stderr)
             return 400
 
         try:
             if command == "PLAY_NEW_STREAM":
-                source = form['SOURCE']
-                self.play_new_stream(source)
-                return 200
+                return self.play_new_stream(form)
             else:
                 return 405
-        except KeyError:
-            print("ERROR : Missing parameters", file=sys.stderr)
+        except KeyError as e:
+            print("ERROR : Missing parameter(s) : ", e, file=sys.stderr)
             return 400
         except RuntimeError as e:
             print(e, file=sys.stderr)
             return 409
 
-    def play_new_stream(self, source):
+    def play_new_stream(self, form):
+        source = form.getvalue('STREAM_SOURCE')
+        if source is None:
+            raise KeyError("STREAM_SOURCE")
+
         if not self.process_running():
             vlc = Utils.get_vlc_default()
             vlc_path = vlc[0]
@@ -38,9 +41,10 @@ class Worker:
         else:
             raise RuntimeError("Process already running")
 
+        return 200
+
     def execute(self, cmd, path):
-        unix = 'posix' in sys.builtin_module_names
-        self.current_process = Popen(cmd, stdout=PIPE, bufsize=1, close_fds=unix, shell=True, cwd=path)
+        self.current_process = Popen(cmd, stdout=PIPE, bufsize=1, close_fds=Setup.POSIX, shell=True, cwd=path)
 
     def process_running(self):
         if self.current_process is None:
