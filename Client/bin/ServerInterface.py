@@ -8,11 +8,12 @@ from bin.Utils import Singleton, Utils
 
 @Singleton
 class ServerInterface:
-    __attrs__ = ['server_url']
+    __attrs__ = ['server_url', 'active']
 
     def __init__(self):
         conf = Utils.load_configuration()
         self.server_url = conf["SERVER"]["URL"]
+        self.active = False
 
     def send_vlc_play_stream(self, source):
 

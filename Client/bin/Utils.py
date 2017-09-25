@@ -1,8 +1,5 @@
 import configparser
 import os
-from time import sleep
-
-from PyQt5 import QtGui
 
 from bin.Setup import Setup
 
@@ -17,18 +14,6 @@ class Utils:
         else:
             raise FileNotFoundError("Configuration file not found at : " + file)
         return config
-
-    @staticmethod
-    def set_server_state(serv, ui):
-        """THREAD USE ONLY !"""
-        while True:
-            if serv.ping():
-                ui.widget_server_status.setPixmap(QtGui.QPixmap(Setup.GREEN_LED))
-                ui.widget_server_status.setToolTip("Server connected")
-            else:
-                ui.widget_server_status.setPixmap(QtGui.QPixmap(Setup.RED_LED))
-                ui.widget_server_status.setToolTip("Server unreachable")
-            sleep(5)
 
 
 class Singleton:
