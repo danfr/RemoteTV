@@ -5,6 +5,8 @@
 # Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
+import os
+from pathlib import Path
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -31,9 +33,22 @@ class Ui_MainWindow(object):
         self.server_url.setFont(font)
         self.server_url.setAlignment(QtCore.Qt.AlignCenter)
         self.server_url.setObjectName("server_url")
-        self.widget_server_status = QtWidgets.QWidget(self.centralwidget)
+
+        # Custom LED Widget
+        self.widget_server_status = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.widget_server_status.setFont(font)
+        self.widget_server_status.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.widget_server_status.setText("toto")
+        path = os.path.join(Path(__file__).parent, "icons", "red-led-on.png")
+        self.widget_server_status.setPixmap(QtGui.QPixmap(path))
+        self.widget_server_status.setScaledContents(True)
         self.widget_server_status.setGeometry(QtCore.QRect(105, 65, 40, 40))
         self.widget_server_status.setObjectName("widget_server_status")
+
         self.label_server_url = QtWidgets.QLabel(self.centralwidget)
         self.label_server_url.setGeometry(QtCore.QRect(98, 10, 54, 16))
         self.label_server_url.setObjectName("label_server_url")

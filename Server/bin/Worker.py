@@ -19,6 +19,8 @@ class Worker:
         try:
             if command == "PLAY_NEW_STREAM":
                 return self.play_new_stream(form)
+            elif command == "PING":
+                return 200
             else:
                 return 405
         except KeyError as e:
