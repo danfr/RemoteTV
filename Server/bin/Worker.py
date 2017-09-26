@@ -21,6 +21,8 @@ class Worker:
                 return self.play_new_stream(form)
             elif command == "PING":
                 return 200
+            elif command == "PROCESS_STATUS":
+                return 102 if self.process_running() else 100
             else:
                 return 405
         except KeyError as e:
@@ -38,7 +40,7 @@ class Worker:
         if not self.process_running():
             vlc = Utils.get_vlc_default()
             vlc_path = vlc[0]
-            vlc_cmd = vlc[1] + " " + source
+            vlc_cmd = vlc[1] + " " + source + " " + Setup.VLC_PLAYLIST_END
             self.execute(vlc_cmd, vlc_path)
         else:
             raise RuntimeError("Process already running")

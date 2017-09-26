@@ -57,6 +57,20 @@ class Ui_MainWindow(object):
         self.label_server_url.setObjectName("label_server_url")
         MainWindow.setCentralWidget(self.centralwidget)
 
+        self.label_stream_url = QtWidgets.QLabel(self.centralwidget)
+        self.label_stream_url.setGeometry(QtCore.QRect(70, 120, 110, 16))
+        self.label_stream_url.setObjectName("label_stream_url")
+        self.stream_url = QtWidgets.QLineEdit(self.centralwidget)
+        self.stream_url.setGeometry(QtCore.QRect(20, 150, 210, 20))
+        self.stream_url.setObjectName("stream_url")
+        self.play_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.play_btn.setGeometry(QtCore.QRect(90, 185, 70, 23))
+        self.play_btn.setObjectName("play_btn")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.statusBar = QtWidgets.QStatusBar(MainWindow)
+        self.statusBar.setObjectName("statusBar")
+        MainWindow.setStatusBar(self.statusBar)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -65,6 +79,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "RemoteTV"))
         self.server_url.setText(_translate("MainWindow", "TextLabel"))
         self.label_server_url.setText(_translate("MainWindow", "Server URL"))
+        self.label_stream_url.setText(_translate("MainWindow", "Paste stream URL here"))
+        self.play_btn.setText(_translate("MainWindow", "Play"))
 
 
 if __name__ == "__main__":

@@ -42,3 +42,16 @@ class ServerInterface:
             return False
 
         return r.status_code == 200
+
+    def is_process_running(self):
+        # data to be sent
+        data = {'COMMAND': "PROCESS_STATUS"}
+
+        # sending post request and saving response as response object
+        try:
+            r = requests.post(url=self.server_url, data=data)
+        except ConnectionError as e:
+            print("ERROR : Server unavailable at " + self.server_url, e, file=sys.stderr)
+            return False
+
+        return r.status_code == 102
