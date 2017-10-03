@@ -17,11 +17,11 @@ class UIManager:
         self.ui = ui
 
     def initialize(self):
-        server_watchdog = Thread(target=self.check_server_state, args=(self.server, self.ui), daemon=True)
+        server_watchdog = Thread(target=self._check_server_state, args=(self.server, self.ui), daemon=True)
         server_watchdog.start()
-        self.ui.play_btn.clicked.connect(self.play_clicked)
+        self.ui.play_btn.clicked.connect(self._play_clicked)
 
-    def check_server_state(self, server, window):
+    def _check_server_state(self, server, window):
         """THREAD USE ONLY !"""
         while True:
             if server.ping():
@@ -40,6 +40,6 @@ class UIManager:
 
             sleep(5)
 
-    def play_clicked(self):
+    def _play_clicked(self):
         source = self.ui.stream_url.text()
         self.server.send_vlc_play_stream(source)
