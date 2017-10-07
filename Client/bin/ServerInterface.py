@@ -1,3 +1,4 @@
+import os
 import sys
 
 import requests
@@ -44,6 +45,20 @@ class ServerInterface:
         # sending post request and saving response as response object
         try:
             r = requests.post(url=self.server_url, data=data)
+        except ConnectionError as e:
+            print("ERROR : Server unavailable at " + self.server_url, e, file=sys.stderr)
+            return False
+
+    def send_vlc_send_file(self, file):
+        # data to be sent
+        filename = os.path.basename(file)
+        data = {'COMMAND': "PLAY_NEW_FILE",
+                'FILENAME': filename}
+
+        # sending post request and saving response as response object
+        try:
+            with open(file, 'rb') as f:
+                r = requests.post(url=self.server_url, data=data, files={"FILE": ("binaryfile", f)})
         except ConnectionError as e:
             print("ERROR : Server unavailable at " + self.server_url, e, file=sys.stderr)
             return False
