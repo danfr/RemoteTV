@@ -18,7 +18,7 @@ class ServerInterface:
         self.active = False
 
     def send_vlc_play_stream(self, source):
-
+        """Send already exiting stream (eg: youtube) to remote"""
         # data to be sent
         data = {'COMMAND': "PLAY_NEW_STREAM",
                 'STREAM_SOURCE': source}
@@ -33,6 +33,7 @@ class ServerInterface:
         return r.status_code == 200
 
     def send_vlc_play_file(self, file):
+        """Create a new stream from a local file and send it to remote"""
         ip = Utils.get_lan_ip()
         port = Utils.get_free_tcp_port()
         VLCStreamer.start_streaming(file, port)
@@ -50,6 +51,7 @@ class ServerInterface:
             return False
 
     def send_vlc_send_file(self, file):
+        """Send a local file to remote"""
         # data to be sent
         filename = os.path.basename(file)
         data = {'COMMAND': "PLAY_NEW_FILE",
@@ -64,6 +66,7 @@ class ServerInterface:
             return False
 
     def ping(self):
+        """Check if server is still alive"""
         # data to be sent
         data = {'COMMAND': "PING"}
 
@@ -77,6 +80,7 @@ class ServerInterface:
         return r.status_code == 200
 
     def is_process_running(self):
+        """Check if a process is running on the remote"""
         # data to be sent
         data = {'COMMAND': "PROCESS_STATUS"}
 
