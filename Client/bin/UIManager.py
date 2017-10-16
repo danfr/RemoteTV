@@ -3,7 +3,7 @@ from time import sleep
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import QObject, QEvent
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 from bin.Setup import Setup
 from bin.Utils import Singleton
@@ -49,15 +49,19 @@ class UIManager:
 
     def _play_clicked(self):
         source = self.ui.stream_url.text()
-        self.server.send_vlc_play_stream(source)
+        if self.server.send_vlc_play_stream(source):
+            self.ui.stream_url.setText("")
 
     def _stream_clicked(self):
         source = self.ui.file_path.text()
-        self.server.send_vlc_play_file(source)
+        if self.server.send_vlc_play_file(source):
+            self.ui.file_path.setText("")
 
     def _transfer_clicked(self):
         source = self.ui.file_path.text()
-        self.server.send_vlc_send_file(source)
+        self.ui.statusBar.showMessage("Transferring file, please wait...")
+        if self.server.send_vlc_send_file(source):
+            self.ui.file_path.setText("")
 
     def _file_focused(self):
         if not self.lock:  # Avoid loop on focusIn event
@@ -70,6 +74,18 @@ class UIManager:
             self.lock = True
         else:
             self.lock = False
+
+    def showdialog(self, title, message, submessage="", icon=QMessageBox.Information, buttons=QMessageBox.Ok):
+        msg = QMessageBox()
+        msg.setIcon(icon)
+
+        msg.setText(message)
+        msg.setInformativeText(submessage)
+        msg.setWindowTitle(title)
+        msg.setStandardButtons(buttons)
+        msg.setFixedWidth(500)
+
+        return msg.exec_()
 
 
 class Filter(QObject):

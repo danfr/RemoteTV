@@ -5,19 +5,31 @@
 # Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
+import ctypes
 import os
 from pathlib import Path
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from bin.Setup import Setup
 from bin.Utils import Singleton
 
 
 @Singleton
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        if not Setup.POSIX:
+            myappid = '75a57eb5-5a4f-427a-96ae-bdf0a959fba1'  # arbitrary string
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(250, 400)
+        app_icon = QtGui.QIcon()
+        app_icon.addFile(Setup.ICON16, QtCore.QSize(16, 16))
+        app_icon.addFile(Setup.ICON24, QtCore.QSize(24, 24))
+        app_icon.addFile(Setup.ICON32, QtCore.QSize(32, 32))
+        app_icon.addFile(Setup.ICON48, QtCore.QSize(48, 48))
+        app_icon.addFile(Setup.ICON256, QtCore.QSize(256, 256))
+        MainWindow.setWindowIcon(app_icon)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

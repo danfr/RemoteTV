@@ -2,8 +2,11 @@ import os
 import sys
 
 import requests
+from PyQt5.QtWidgets import QMessageBox
 from requests.exceptions import ConnectionError
 
+from bin.Setup import Setup
+from bin.UIManager import UIManager
 from bin.Utils import Singleton, Utils
 from bin.VLCStreamer import VLCStreamer
 
@@ -50,8 +53,22 @@ class ServerInterface:
             print("ERROR : Server unavailable at " + self.server_url, e, file=sys.stderr)
             return False
 
+        return r.status_code == 200
+
     def send_vlc_send_file(self, file):
         """Send a local file to remote"""
+        # Check input
+        if not os.path.isfile(file):
+            uim = UIManager()
+            uim.showdialog("Bad input", "The given path is not a file :", file, icon=QMessageBox.Warning)
+            return False
+        else:
+            _, file_extension = os.path.splitext(file)
+            if file_extension not in Setup.SUPPORTED_EXT:
+                uim = UIManager()
+                uim.showdialog("Bad input", "The given file type is not supported", file, icon=QMessageBox.Warning)
+                return False
+
         # data to be sent
         filename = os.path.basename(file)
         data = {'COMMAND': "PLAY_NEW_FILE",
@@ -64,6 +81,8 @@ class ServerInterface:
         except ConnectionError as e:
             print("ERROR : Server unavailable at " + self.server_url, e, file=sys.stderr)
             return False
+
+        return r.status_code == 200
 
     def ping(self):
         """Check if server is still alive"""
